@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <script src="../public/javascripts/angular/angular.min.js"></script>
+    <script src="../public/javascripts/mui.min.js"></script>
+    <script src="../public/javascripts/phone.js"></script>
+    <link rel="stylesheet" href="../public/stylesheets/mui.min.css">
+    <style>
+        .mui-navigate-right:after, .mui-push-right:after {
+            right: 15px;
+            content: '';
+        }
+        li{
+            line-height: 45px;
+        }
+        li>a{
+            line-height: 45px;
+            border-bottom:1px solid #bfbfbf;
+        }
+        .mui-navigate-right>div{
+            display: inline-block;
+            width: 35px;height: 35px;
+            background: #00aff0;
+            margin: 5px;
+            line-height: 35px;
+            text-align: center;
+            color: #fff;
+        }
+        .en{
+            margin-top:25%;
+        }
+        .en>div{
+            height: 50px;
+            line-height: 50px;
+        }
+        .mui-table-view-cell:after {
+            background-color:#fff;
+        }
+        .mui-table-view-cell>a:not(.mui-btn) {
+            margin:0;
+        }
+        .mui-search input[type=search] {
+            margin: 0;
+        }
+    </style>
+    <script>
+        window.onload = function () {
+            var placeholder = document.querySelector(".mui-placeholder");
+            var input = document.querySelector(".mui-input-clear");
+            placeholder.onclick = function () {
+                this.style.width = "20px";
+                input.focus();
+            }
+
+            input.onblur = function () {
+                placeholder.style.width = "100%";
+            }
+            var div=document.querySelectorAll(".mui-navigate-right>div") ;
+            for(var i=0;i<div.length;i++){
+                div[i].innerHTML=div[i].innerHTML.slice(0,1);
+            }
+            var english=document.querySelectorAll(".en>div") ;
+            for(var i=0;i<english.length;i++){
+                english[i].innerHTML=english[i].innerHTML.toUpperCase();
+            }
+        }
+    </script>
+</head>
+
+<body ng-app="myapp">
+<header class="mui-bar mui-bar-nav">
+    <h1 class="mui-title">通讯录</h1>
+</header>
+<div ng-controller="phone">
+    <div class="mui-input-row mui-search" style="margin-top: 44px">
+        <input type="search" class="mui-input-clear" placeholder="" data-input-clear="15" data-input-search="15" ng-model="search">
+
+    <span class="mui-placeholder">
+        <span class="mui-icon mui-icon-search"></span>
+        <span>
+        </span>
+    </span>
+    </div>
+
+    <ul class="mui-table-view">
+        <li class="mui-table-view-cell" ng-show="type!==''" ng-click="show()" style="text-align: center">显示全部</li>
+        <li class="mui-table-view-cell" ng-repeat="item in data | filter:{en:type} |filter:{en:search} track by $index ">
+            <div>
+                {{item.en}}
+            </div>
+            <a class="mui-navigate-right" href="tel:" ng-repeat="aa in item track by $index">
+                <div>{{aa.name}}</div>
+                <span>{{aa.name}}</span>
+                <span>{{aa.phone}}</span>
+            </a>
+        </li>
+
+    </ul>
+    <div class="en" style="position: fixed;right:10px;width:20px;z-index:999;top:0">
+        <div ng-repeat="item in data" ng-click="filter(item.en)" class="english">
+            {{item.en}}
+        </div>
+    </div>
+</div>
+</body>
+</html>
